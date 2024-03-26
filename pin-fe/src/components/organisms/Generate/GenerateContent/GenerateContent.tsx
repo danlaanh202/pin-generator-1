@@ -15,41 +15,58 @@ export default function GenerateContent() {
     templateRef.current[key] = el;
   };
   const componentSettingProps = { componentIndex, id: templateId };
-  const currentSelectedElemnt = templateRef.current[selectedKey]
+  const currentSelectedElement = templateRef.current[selectedKey];
 
   const handleDrag = (e: any) => {
+    currentSelectedElement.style.top = `${e.top}px`;
+    currentSelectedElement.style.left = `${e.left}px`;
+    currentSelectedElement.style.bottom = `${e.bottom}px`;
+    currentSelectedElement.style.right = `${e.right}px`;
+  };
+
+  const handleDragEnd = (e: any) => {
+    if (!e.lastEvent) return;
     handleChangeComponentSetting({
       ...componentSettingProps,
       key: "wrapperStyles",
       value: {
-        top: e.top,
-        right: e.right,
-        bottom: e.bottom,
-        left: e.left,
+        top: `${e.lastEvent.top}px`,
+        right: `${e.lastEvent.right}px`,
+        bottom: `${e.lastEvent.bottom}px`,
+        left: `${e.lastEvent.left}px`,
       },
     });
   };
 
   const handleResize = (e: any) => {
-    console.log("resize",{ e });
-
-    // handleChangeComponentSetting({
-    //   ...componentSettingProps,
-    //   key: "wrapperStyles",
-    //   // value: {
-    //   //   width: `${e.width}px`,
-    //   //   height: `${e.height}px`,
-    //   // },
-    // });
+    const [xAxis, yAxis] = e.delta;
+    currentSelectedElement.style.width = `${
+      parseFloat(currentSelectedElement.style.width) + xAxis
+    }px`;
+    currentSelectedElement.style.height = `${
+      parseFloat(currentSelectedElement.style.height) + yAxis
+    }px`;
+    currentSelectedElement.style.transform = e.drag.transform;
   };
 
-  const handleRotate = (e: any) => {
-
+  const handleResizeEnd = (e: any) => {
+    if (!e.lastEvent) return;
     handleChangeComponentSetting({
       ...componentSettingProps,
       key: "wrapperStyles",
       value: {
-        transform: e.drag.transform
+        width: `${e.lastEvent.width}px`,
+        height: `${e.lastEvent.height}px`,
+      },
+    });
+  };
+
+  const handleRotate = (e: any) => {
+    handleChangeComponentSetting({
+      ...componentSettingProps,
+      key: "wrapperStyles",
+      value: {
+        transform: e.drag.transform,
       },
     });
   };
@@ -58,7 +75,7 @@ export default function GenerateContent() {
     <Box sx={{ display: "flex", gap: "30px", flexWrap: "wrap" }}>
       <Moveable
         ref={moveableRef}
-        target={currentSelectedElemnt}
+        target={currentSelectedElement}
         draggable={true}
         throttleDrag={1}
         edgeDraggable={false}
@@ -66,18 +83,20 @@ export default function GenerateContent() {
         throttleDragRotate={0}
         resizable={true}
         keepRatio={false}
-        throttleResize={1}
+        throttleResize={0}
         renderDirections={["nw", "n", "ne", "w", "e", "sw", "s", "se"]}
         rotatable={true}
-        throttleRotate={0}
-        rotationPosition={"top"}
+        throttleRotate={1}
         onDrag={handleDrag}
+        onDragEnd={handleDragEnd}
         onResize={handleResize}
+        onResizeEnd={handleResizeEnd}
         onRotate={handleRotate}
       />
       {input.map((template: any) => {
         return (
           <Template
+            key={template.id}
             template={template}
             setComponentRef={setComponentRef}
             onSelectComponent={(key: any) => setSelectedKey(key)}

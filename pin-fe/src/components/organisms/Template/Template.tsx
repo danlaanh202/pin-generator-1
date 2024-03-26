@@ -2,19 +2,22 @@ import React from "react";
 import "./Template.scss";
 import { TemplateContextProvider } from "../../../contexts/TemplateContext";
 import TemplateRenderer from "../../../helpers/TemplateRenderer";
-import {v4} from "uuid";
 
 const templateRenderer = new TemplateRenderer();
 
-export default function Template({ template, onSelectComponent, setComponentRef }: any) {
+export default function Template({
+  template,
+  onSelectComponent,
+  setComponentRef,
+}: any) {
   const initTemplateRef = (el: any, index: number) => {
-    setComponentRef(el, `${template.id}-${index}`)
-  }
+    setComponentRef(el, `${template.id}-${index}`);
+  };
   const selectComponent = (index) => {
-    onSelectComponent(`${template.id}-${index}`)
-  }
+    onSelectComponent(`${template.id}-${index}`);
+  };
   return (
-    <TemplateContextProvider value={{selectComponent, initTemplateRef}}>
+    <TemplateContextProvider value={{ selectComponent, initTemplateRef }}>
       <div className="Pin-Template__DesignContainer">
         <div className="Pin-Template__TemplateContainer">
           <div className="Pin-Template__ImageContainer">
@@ -22,7 +25,11 @@ export default function Template({ template, onSelectComponent, setComponentRef 
               <div className="Pin-Template__ImageContainer--RealSize">
                 <div className="Pin-Template__ComponentContainer">
                   {template.components.map((component: any, index: number) => {
-                    return templateRenderer.render(component.type, component, index);
+                    return templateRenderer.render(
+                      component.type,
+                      component,
+                      index
+                    );
                   })}
                 </div>
               </div>
