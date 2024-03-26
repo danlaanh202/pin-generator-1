@@ -1,0 +1,32 @@
+.Pin-Template__DesignContainer {
+    display: flex;
+    text-align: center;
+    align-items: flex-start;
+    flex-direction: column;
+    .Pin-Template__TemplateContainer {
+      overflow: hidden;
+      box-shadow: 5px 5px 5px #a1a1a1;
+      background-color: white;
+        .Pin-Template__ImageContainer {
+          width: 200px;
+          height: 300px;
+          margin: 0px;
+            .Pin-Template__ImageContainer--Scale {
+              width: 1000px;
+              height: 1500px;
+              transform: scale(0.2);
+              transform-origin: left top;
+                .Pin-Template__ComponentContainer {
+                  width: 1000px;
+                  height: 1500px;
+                  overflow: hidden;
+                  position: relative;
+                }
+
+            }
+        }
+    }
+    .Pin-Template__ActionContainer {
+
+    }
+}

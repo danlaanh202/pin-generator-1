@@ -1,0 +1,20 @@
+.Pin-Color__Container {
+  position: relative;
+  .Pin-Color__Wrapper {
+    padding: 5px;
+    box-shadow: none;
+    cursor: pointer;
+    &.--Selected {
+      border: 2px solid rgb(39, 195, 166);
+      border-radius: 50%;
+    }
+    .Pin-Color__Item {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+  }
+  .Pin-Sketch__Wrapper {
+    position: absolute;
+  }
+}
